@@ -130,12 +130,15 @@ function fizzBuzz() {
 
 // CHALLENGE 7: LONGEST WORD
 // Return the longest word of a string
-// ex. longestWord('Hi there, my name is Brad') === 'there,'
+// ex. longestWord('Hi there, my name is Azez') === 'there,'
 
-function longestWord(sen) {
-  // SOLUTION 1 - Return a single longest word
-  // SOLUTION 2 - Return an array and include multiple words if they have the same length
-  // SOLUTION 3 - Only return an array if multiple words, otherwise return a string
+function longestWord(sentence) {
+  //returns an array if multiple words are the longest, otherwise return a string
+  const wordArray = sentence.toLowerCase().match(/[a-z0-9]+/g);
+  const sorted = wordArray.sort((a, b) => b.length - a.length);
+  const longestWordArray = sorted.filter((word) => word.length === sorted[0].length);
+  if(longestWordArray.length === 1) return longestWordArray[0] 
+  else return longestWordArray;
 }
 
 // CHALLENGE 8: ARRAY CHUNKING
@@ -143,28 +146,62 @@ function longestWord(sen) {
 // ex. chunkArray([1, 2, 3, 4, 5, 6, 7], 3) === [[1, 2, 3],[4, 5, 6],[7]]
 // ex. chunkArray([1, 2, 3, 4, 5, 6, 7], 2) === [[1, 2],[3, 4],[5, 6],[7]]
 
-function chunkArray(arr, len) {}
+function chunkArray(array, length) {
+  // const chunkedArray = [];
+  // let i = 0;
+  // while(i < array.length) {
+  //   chunkedArray.push(array.slice(i, i + length));
+  //   i += length;
+  // }
+  // return chunkedArray;
+  
+  const chunkedArray = [];
+  array.forEach((value) => { 
+    const last = chunkedArray[chunkedArray.length - 1];
+    if(!last || last.length === length) chunkedArray.push([value])
+    else last.push(value);
+  });
+  return chunkedArray;
+}
 
 // CHALLENGE 9: FLATTEN ARRAY
 // Take an array of arrays and flatten to a single array
 // ex. [[1, 2], [3, 4], [5, 6], [7]] = [1, 2, 3, 4, 5, 6, 7]
 
-function flattenArray(arrays) {}
+function flattenArray(arrays) {
+  // return arrays.reduce((a, b) => a.concat(b));
+  
+  // return [].concat.apply([], arrays);
+  
+  return [].concat(...arrays);
+}
 
 // CHALLENGE 10: ANAGRAM
 // Return true if anagram and false if not
 // ex. 'elbow' === 'below'
 // ex. 'Dormitory' === 'dirty room##'
 
-function isAnagram(str1, str2) {}
+function isAnagram(a, b) {
+  return format(a) === format(b);
+}
+function format(string) {
+  return string.replace(/[^\w]/g, '')
+               .toLowerCase()
+               .split('')
+               .sort()
+               .join('');
+}
 
-// CHALLENGE 11: LETTER CHANGES
+// CHALLENGE 11: CHANGE LETTERS
 // Change every letter of the string to the one that follows it and capitalize the vowels
 // Z should turn to A
 // ex. 'hello there' === 'Ifmmp UIfsf'
 
-function letterChanges(str) {}
+function moveLetters(string) {
+  let newString = string.toLowerCase().replace(/[a-z]/gi, (letter) => (letter === 'z' || letter === 'Z' ? 'a' : String.fromCharCode(letter.charCodeAt() + 1)));
+  newString = newString.replace(/a|e|i|o|u/gi, (vowel) => vowel.toUpperCase());
+  return newString;
+}
 
-
-const output = fizzBuzz();
+const output = moveLetters('hello there');
 console.log(output);
